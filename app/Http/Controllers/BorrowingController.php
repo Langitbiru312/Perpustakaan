@@ -65,18 +65,32 @@ class BorrowingController extends Controller
             return back()->withError('Buku ini sudah dikembalikan.');
         }
 
-        $returnDate = now()->toDateString();
-        $isLate = now()->toDateString() > $borrowing->due_date->toDateString();
+        $returnDate = now();
+        $isLate = $returnDate->toDateString() > $borrowing->due_date->toDateString();
 
         $borrowing->update([
-            'return_date' => $returnDate,
+            'return_date' => $returnDate->toDateString(),
             'status' => $isLate ? 'Terlambat' : 'Dikembalikan',
         ]);
+
+        if ($isLate) {
+            $daysLate = $returnDate->startOfDay()->diffInDays($borrowing->due_date->startOfDay());
+            // If the time differences caused diffInDays to be 0 for a late day, ensure minimum 1
+            if ($daysLate == 0) $daysLate = 1;
+            
+            $fineAmount = $daysLate * 1000; // Denda Rp 1.000 per hari
+            
+            $borrowing->fine()->create([
+                'amount' => $fineAmount,
+                'status' => 'Belum Lunas'
+            ]);
+        }
 
         // Kembalikan status eksemplar ke Tersedia
         $borrowing->bookCopy->update(['status' => 'Tersedia']);
 
-        return to_route('borrowing.index')->withSuccess('Buku berhasil dikembalikan');
+        $message = $isLate ? "Buku dikembalikan terlambat $daysLate hari. Denda: Rp " . number_format($fineAmount, 0, ',', '.') : 'Buku berhasil dikembalikan tepat waktu.';
+        return to_route('borrowing.index')->withSuccess($message);
     }
 
     public function destroy(Borrowing $borrowing)

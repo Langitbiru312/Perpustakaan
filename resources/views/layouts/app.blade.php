@@ -346,6 +346,14 @@
                         <span>Transaksi Peminjaman</span>
                     </a>
                 </li>
+
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('fine.*') ? '' : 'collapsed' }}"
+                        href="{{ route('fine.index') }}">
+                        <i class='bx bx-money'></i>
+                        <span>Pembayaran Denda</span>
+                    </a>
+                </li>
             @endif
 
 

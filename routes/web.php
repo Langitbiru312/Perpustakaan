@@ -35,6 +35,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('/member', App\Http\Controllers\MemberController::class)->middleware('role:Superadmin,Admin');
     Route::resource('/borrowing', App\Http\Controllers\BorrowingController::class);
     Route::put('/borrowing/{borrowing}/return', [App\Http\Controllers\BorrowingController::class, 'returnBook'])->name('borrowing.return');
+    Route::get('/fine', [App\Http\Controllers\FineController::class, 'index'])->name('fine.index');
+    Route::put('/fine/{fine}/pay', [App\Http\Controllers\FineController::class, 'pay'])->name('fine.pay');
 
     Route::get('/setting', [SettingController::class, 'index'])->name('setting.index');
     Route::put('/setting/{setting}/update', [SettingController::class, 'update'])->name('setting.update');

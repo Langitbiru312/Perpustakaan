@@ -23,4 +23,9 @@ class Borrowing extends Model
     {
         return $this->belongsTo(BookCopy::class);
     }
+
+    public function fine()
+    {
+        return $this->hasOne(Fine::class);
+    }
 }
