@@ -337,6 +337,15 @@
                         <span>Anggota</span>
                     </a>
                 </li>
+
+                <li class="nav-heading">Sirkulasi</li>
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('borrowing.*') ? '' : 'collapsed' }}"
+                        href="{{ route('borrowing.index') }}">
+                        <i class='bx bx-transfer'></i>
+                        <span>Transaksi Peminjaman</span>
+                    </a>
+                </li>
             @endif
 
 

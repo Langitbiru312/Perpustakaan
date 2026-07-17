@@ -33,6 +33,8 @@ Route::middleware('auth')->group(function () {
     Route::put('/book/{book}/copy/{copy}', [App\Http\Controllers\BookCopyController::class, 'update'])->name('book.copy.update');
     Route::delete('/book/{book}/copy/{copy}', [App\Http\Controllers\BookCopyController::class, 'destroy'])->name('book.copy.destroy');
     Route::resource('/member', App\Http\Controllers\MemberController::class)->middleware('role:Superadmin,Admin');
+    Route::resource('/borrowing', App\Http\Controllers\BorrowingController::class);
+    Route::put('/borrowing/{borrowing}/return', [App\Http\Controllers\BorrowingController::class, 'returnBook'])->name('borrowing.return');
 
     Route::get('/setting', [SettingController::class, 'index'])->name('setting.index');
     Route::put('/setting/{setting}/update', [SettingController::class, 'update'])->name('setting.update');
