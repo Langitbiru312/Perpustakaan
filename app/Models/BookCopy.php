@@ -12,4 +12,9 @@ class BookCopy extends Model
     {
         return $this->belongsTo(Book::class);
     }
+
+    public function borrowings()
+    {
+        return $this->hasMany(Borrowing::class);
+    }
 }
