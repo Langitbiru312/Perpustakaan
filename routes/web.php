@@ -44,6 +44,8 @@ Route::middleware('auth')->group(function () {
     
     Route::post('/review', [App\Http\Controllers\BookReviewController::class, 'store'])->name('review.store');
 
+    Route::get('/riwayat', [App\Http\Controllers\MemberHistoryController::class, 'index'])->name('riwayat.index');
+
     Route::get('/setting', [SettingController::class, 'index'])->name('setting.index');
     Route::put('/setting/{setting}/update', [SettingController::class, 'update'])->name('setting.update');
 });

@@ -364,6 +364,17 @@
                 </a>
             </li>
 
+            @if(Auth::user()->role === 'Anggota')
+                <li class="nav-heading">Akun Saya</li>
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('riwayat.*') ? '' : 'collapsed' }}"
+                        href="{{ route('riwayat.index') }}">
+                        <i class='bx bx-history'></i>
+                        <span>Riwayat & Denda</span>
+                    </a>
+                </li>
+            @endif
+
 
         </ul>
 
