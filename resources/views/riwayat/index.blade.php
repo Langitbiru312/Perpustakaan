@@ -58,6 +58,7 @@
                                 <th>Tgl Kembali</th>
                                 <th>Status</th>
                                 <th>Denda</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -79,7 +80,14 @@
                                     </td>
                                     <td>{{ $borrowing->return_date ? \Carbon\Carbon::parse($borrowing->return_date)->format('d M Y') : '-' }}</td>
                                     <td>
-                                        <span class="badge bg-{{ $borrowing->status == 'Dipinjam' ? 'warning' : ($borrowing->status == 'Dikembalikan' ? 'success' : 'danger') }}">
+                                        @php
+                                            $badgeClass = 'secondary';
+                                            if ($borrowing->status == 'Dipinjam') $badgeClass = 'warning';
+                                            if ($borrowing->status == 'Dikembalikan') $badgeClass = 'success';
+                                            if ($borrowing->status == 'Terlambat') $badgeClass = 'danger';
+                                            if ($borrowing->status == 'Menunggu Konfirmasi') $badgeClass = 'info text-white';
+                                        @endphp
+                                        <span class="badge bg-{{ $badgeClass }}">
                                             {{ $borrowing->status }}
                                         </span>
                                     </td>
@@ -95,10 +103,22 @@
                                             <span class="text-muted">-</span>
                                         @endif
                                     </td>
+                                    <td>
+                                        @if(in_array($borrowing->status, ['Dipinjam', 'Terlambat']))
+                                            <form action="{{ route('riwayat.request_return', $borrowing) }}" method="POST">
+                                                @csrf
+                                                <button type="submit" class="btn btn-primary btn-sm" onclick="return confirm('Anda yakin ingin mengajukan pengembalian buku ini? Pastikan Anda segera mengembalikan fisik bukunya ke petugas.')">
+                                                    <i class='bx bx-send'></i> Ajukan Pengembalian
+                                                </button>
+                                            </form>
+                                        @else
+                                            <span class="text-muted small">-</span>
+                                        @endif
+                                    </td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="8" class="text-center text-muted py-4">Anda belum pernah meminjam buku.</td>
+                                    <td colspan="9" class="text-center text-muted py-4">Anda belum pernah meminjam buku.</td>
                                 </tr>
                             @endforelse
                         </tbody>

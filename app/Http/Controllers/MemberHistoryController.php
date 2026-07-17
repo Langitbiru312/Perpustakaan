@@ -45,4 +45,22 @@ class MemberHistoryController extends Controller
             'activeReservations' => $activeReservations,
         ]);
     }
+
+    public function requestReturn(Request $request, Borrowing $borrowing)
+    {
+        $user = Auth::user();
+
+        // Check if the borrowing belongs to the logged-in student
+        if ($user->role !== 'Anggota' || !$user->member || $borrowing->member_id !== $user->member->id) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        // Only allow request if status is 'Dipinjam' or 'Terlambat'
+        if (in_array($borrowing->status, ['Dipinjam', 'Terlambat'])) {
+            $borrowing->update(['status' => 'Menunggu Konfirmasi']);
+            return back()->withSuccess('Pengajuan pengembalian berhasil dikirim. Silakan serahkan fisik buku ke petugas perpustakaan.');
+        }
+
+        return back()->withError('Buku ini tidak dapat diajukan untuk pengembalian.');
+    }
 }

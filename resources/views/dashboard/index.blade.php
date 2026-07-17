@@ -110,11 +110,14 @@
                                         <td>{{ $borrow->borrow_date->format('d/m/Y') }}</td>
                                         <td>{{ $borrow->due_date->format('d/m/Y') }}</td>
                                         <td>
-                                            @if($borrow->return_date)
-                                                <span class="badge bg-success">Dikembalikan</span>
-                                            @else
-                                                <span class="badge bg-warning">Dipinjam</span>
-                                            @endif
+                                            @php
+                                                $badgeClass = 'secondary';
+                                                if ($borrow->status == 'Dipinjam') $badgeClass = 'warning';
+                                                if ($borrow->status == 'Dikembalikan') $badgeClass = 'success';
+                                                if ($borrow->status == 'Terlambat') $badgeClass = 'danger';
+                                                if ($borrow->status == 'Menunggu Konfirmasi') $badgeClass = 'info text-white';
+                                            @endphp
+                                            <span class="badge bg-{{ $badgeClass }}">{{ $borrow->status }}</span>
                                         </td>
                                     </tr>
                                 @endforeach

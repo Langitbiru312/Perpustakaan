@@ -32,7 +32,14 @@
                             <td>{{ $borrowing->borrow_date->format('d M Y') }}</td>
                             <td>{{ $borrowing->due_date->format('d M Y') }}</td>
                             <td>
-                                <span class="badge bg-{{ $borrowing->status == 'Dipinjam' ? 'warning' : ($borrowing->status == 'Dikembalikan' ? 'success' : 'danger') }}">
+                                @php
+                                    $badgeClass = 'secondary';
+                                    if ($borrowing->status == 'Dipinjam') $badgeClass = 'warning';
+                                    if ($borrowing->status == 'Dikembalikan') $badgeClass = 'success';
+                                    if ($borrowing->status == 'Terlambat') $badgeClass = 'danger';
+                                    if ($borrowing->status == 'Menunggu Konfirmasi') $badgeClass = 'info text-white';
+                                @endphp
+                                <span class="badge bg-{{ $badgeClass }}">
                                     {{ $borrowing->status }}
                                 </span>
                             </td>
@@ -40,11 +47,11 @@
                                 <a href="{{ route('borrowing.show', $borrowing) }}" class="btn btn-info btn-sm text-white">
                                     <i class='bx bx-show'></i> Detail
                                 </a>
-                                @if($borrowing->status == 'Dipinjam' || $borrowing->status == 'Terlambat')
+                                @if(in_array($borrowing->status, ['Dipinjam', 'Terlambat', 'Menunggu Konfirmasi']))
                                     <form action="{{ route('borrowing.return', $borrowing) }}" method="POST" class="d-inline">
                                         @csrf @method('PUT')
-                                        <button type="submit" class="btn btn-success btn-sm" onclick="return confirm('Proses pengembalian buku?')">
-                                            <i class='bx bx-check'></i> Kembali
+                                        <button type="submit" class="btn btn-success btn-sm" onclick="return confirm('Proses konfirmasi pengembalian buku?')">
+                                            <i class='bx bx-check-double'></i> {{ $borrowing->status == 'Menunggu Konfirmasi' ? 'Konfirmasi Kembali' : 'Kembali' }}
                                         </button>
                                     </form>
                                 @endif
