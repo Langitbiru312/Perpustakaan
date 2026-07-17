@@ -29,6 +29,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('/author', App\Http\Controllers\AuthorController::class);
     Route::resource('/publisher', App\Http\Controllers\PublisherController::class);
     Route::resource('/book', App\Http\Controllers\BookController::class);
+    Route::post('/book/{book}/copy', [App\Http\Controllers\BookCopyController::class, 'store'])->name('book.copy.store');
+    Route::put('/book/{book}/copy/{copy}', [App\Http\Controllers\BookCopyController::class, 'update'])->name('book.copy.update');
+    Route::delete('/book/{book}/copy/{copy}', [App\Http\Controllers\BookCopyController::class, 'destroy'])->name('book.copy.destroy');
 
     Route::get('/setting', [SettingController::class, 'index'])->name('setting.index');
     Route::put('/setting/{setting}/update', [SettingController::class, 'update'])->name('setting.update');

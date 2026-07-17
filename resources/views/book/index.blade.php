@@ -35,7 +35,10 @@
                                     <img src="{{ asset('niceadmin/img/notfound.png') }}" alt="No Cover" width="50">
                                 @endif
                             </td>
-                            <td>{{ $item->title }}<br><small class="text-muted">ISBN: {{ $item->isbn ?? '-' }}</small></td>
+                            <td>
+                                <a href="{{ route('book.show', $item) }}" class="text-decoration-none fw-bold">{{ $item->title }}</a>
+                                <br><small class="text-muted">ISBN: {{ $item->isbn ?? '-' }}</small>
+                            </td>
                             <td>{{ $item->category->name }}</td>
                             <td>{{ $item->author->name }}</td>
                             <td>{{ $item->publisher->name }}</td>
