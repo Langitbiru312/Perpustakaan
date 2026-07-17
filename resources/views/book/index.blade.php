@@ -185,7 +185,5 @@
             </div>
         @endif
 
-        @endif
-
 </x-app>
 
