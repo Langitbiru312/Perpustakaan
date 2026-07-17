@@ -1,9 +1,8 @@
 <x-app>
     <x-slot:title>{{ $title }}</x-slot:title>
 
-    @if(Auth::user()->role == 'Anggota')
-        {{-- ===== TAMPILAN KATALOG CARD UNTUK SISWA ===== --}}
-        <style>
+    {{-- ===== TAMPILAN KATALOG CARD (UNTUK SEMUA ROLE) ===== --}}
+    <style>
             .book-card {
                 border: none;
                 border-radius: 12px;
@@ -49,7 +48,7 @@
         {{-- SEARCH & FILTER BAR --}}
         <div class="card shadow-sm border-0 p-3 mb-4">
             <form method="GET" action="{{ route('book.index') }}" class="row g-3 align-items-center">
-                <div class="col-md-8">
+                <div class="col-md-5">
                     <div class="input-group book-search-bar">
                         <span class="input-group-text bg-white border-end-0 rounded-start-pill">
                             <i class='bx bx-search text-muted'></i>
@@ -59,7 +58,7 @@
                             value="{{ request('search') }}">
                     </div>
                 </div>
-                <div class="col-md-4 d-flex gap-2">
+                <div class="col-md-3 d-flex gap-2">
                     <button type="submit" class="btn btn-primary flex-grow-1">
                         <i class='bx bx-search me-1'></i> Cari
                     </button>
@@ -69,6 +68,13 @@
                         </a>
                     @endif
                 </div>
+                @if(in_array(Auth::user()->role, ['Superadmin', 'Admin']))
+                <div class="col-md-4 text-end">
+                    <a class="btn btn-success" href="{{ route('book.create') }}">
+                        <i class='bx bx-plus-circle'></i> Tambah Buku
+                    </a>
+                </div>
+                @endif
             </form>
         </div>
 
@@ -102,8 +108,8 @@
                             {{-- COVER --}}
                             <a href="{{ route('book.show', $item) }}" class="text-decoration-none">
                                 <div class="cover-wrap">
-                                    <img src="{{ $item->cover_image ? asset('storage/' . $item->cover_image) : asset('niceadmin/img/notfound.png') }}"
-                                        alt="{{ $item->title }}">
+                                    <img src="{{ $item->cover_image ? asset('storage/' . $item->cover_image) : 'https://ui-avatars.com/api/?name=' . urlencode($item->title) . '&background=random&color=fff&size=300' }}"
+                                        class="card-img-top book-cover" alt="{{ $item->title }}">
                                     <span class="status-badge badge bg-{{ $availableCopies > 0 ? 'success' : 'danger' }}">
                                         {{ $availableCopies > 0 ? 'Tersedia' : 'Habis' }}
                                     </span>
@@ -141,21 +147,35 @@
                                     <i class='bx bx-copy-alt me-1'></i>{{ $availableCopies }}/{{ $totalCopies }} eksemplar tersedia
                                 </p>
 
-                                {{-- TOMBOL RESERVASI --}}
+                                {{-- TOMBOL AKSI BERDASARKAN ROLE --}}
                                 <div class="mt-auto">
-                                    @if($availableCopies > 0)
-                                        <form action="{{ route('reservation.store') }}" method="POST">
-                                            @csrf
-                                            <input type="hidden" name="book_id" value="{{ $item->id }}">
-                                            <button type="submit" class="btn btn-primary btn-sm w-100"
-                                                onclick="return confirm('Reservasi buku ini?')">
-                                                <i class='bx bx-bookmark-plus'></i> Reservasi
-                                            </button>
-                                        </form>
+                                    @if(Auth::user()->role == 'Anggota')
+                                        @if($availableCopies > 0)
+                                            <form action="{{ route('reservation.store') }}" method="POST">
+                                                @csrf
+                                                <input type="hidden" name="book_id" value="{{ $item->id }}">
+                                                <button type="submit" class="btn btn-primary btn-sm w-100"
+                                                    onclick="return confirm('Reservasi buku ini?')">
+                                                    <i class='bx bx-bookmark-plus'></i> Reservasi
+                                                </button>
+                                            </form>
+                                        @else
+                                            <a href="#" class="btn btn-outline-secondary btn-sm w-100 disabled">
+                                                <i class='bx bx-time'></i> Stok Habis
+                                            </a>
+                                        @endif
                                     @else
-                                        <a href="{{ route('reservation.store') }}" class="btn btn-outline-secondary btn-sm w-100 disabled">
-                                            <i class='bx bx-time'></i> Stok Habis
-                                        </a>
+                                        <div class="d-flex gap-2">
+                                            <a href="{{ route('book.edit', $item) }}" class="btn btn-warning btn-sm flex-grow-1">
+                                                <i class='bx bx-edit-alt'></i> Edit
+                                            </a>
+                                            <form action="{{ route('book.destroy', $item) }}" method="POST" class="d-inline flex-grow-1">
+                                                @csrf @method('DELETE')
+                                                <button type="submit" class="btn btn-danger btn-sm w-100" onclick="return confirm('Yakin hapus buku ini?')">
+                                                    <i class='bx bx-trash'></i> Hapus
+                                                </button>
+                                            </form>
+                                        </div>
                                     @endif
                                 </div>
                             </div>
@@ -165,67 +185,7 @@
             </div>
         @endif
 
-    @else
-        {{-- ===== TAMPILAN TABEL UNTUK ADMIN/SUPERADMIN ===== --}}
-        <div class="card shadow-lg p-3">
-            <div class="mb-3 d-flex justify-content-between">
-                <a class="btn btn-primary" href="{{ route('book.create') }}" role="button">Tambah Buku</a>
-                <form method="GET" action="{{ route('book.index') }}" class="d-flex gap-2">
-                    <input type="text" name="search" class="form-control" placeholder="Cari buku..." value="{{ request('search') }}">
-                    <button type="submit" class="btn btn-primary"><i class='bx bx-search'></i></button>
-                </form>
-            </div>
-            <div class="table-responsive">
-                <table class="table table-bordered table-striped w-100" id="data-table">
-                    <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Cover</th>
-                            <th scope="col">Judul</th>
-                            <th scope="col">Kategori</th>
-                            <th scope="col">Penulis</th>
-                            <th scope="col">Penerbit</th>
-                            <th scope="col">Tahun</th>
-                            <th scope="col">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($books as $item)
-                            <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>
-                                    @if($item->cover_image)
-                                        <img src="{{ asset('storage/' . $item->cover_image) }}" alt="Cover" width="50">
-                                    @else
-                                        <img src="{{ asset('niceadmin/img/notfound.png') }}" alt="No Cover" width="50">
-                                    @endif
-                                </td>
-                                <td class="text-start">
-                                    <a href="{{ route('book.show', $item) }}" class="text-decoration-none fw-bold">{{ $item->title }}</a>
-                                    <br><small class="text-muted">ISBN: {{ $item->isbn ?? '-' }}</small>
-                                </td>
-                                <td>{{ $item->category->name }}</td>
-                                <td>{{ $item->author->name }}</td>
-                                <td>{{ $item->publisher->name }}</td>
-                                <td>{{ $item->publication_year }}</td>
-                                <td>
-                                    <a href="{{ route('book.edit', $item) }}" class="btn btn-warning btn-sm">
-                                        <i class='bx bx-edit-alt'></i>
-                                    </a>
-                                    <form action="{{ route('book.destroy', $item) }}" method="POST" class="d-inline">
-                                        @csrf @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Yakin hapus?')">
-                                            <i class='bx bx-trash'></i>
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    @endif
+        @endif
 
 </x-app>
 

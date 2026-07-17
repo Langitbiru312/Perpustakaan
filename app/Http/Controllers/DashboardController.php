@@ -6,28 +6,49 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
+use App\Models\User;
+use App\Models\Member;
+use App\Models\Book;
+use App\Models\Borrowing;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        $totalUsers = \App\Models\User::count();
-        $superadminCount = \App\Models\User::where('role', 'Superadmin')->count();
-        $adminCount = \App\Models\User::where('role', 'Admin')->count();
-        $memberCount = \App\Models\Member::count();
-        $bookCount = \App\Models\Book::count();
-        $borrowingCount = \App\Models\Borrowing::count();
-        $reservationCount = \App\Models\BookReservation::count();
+        if (Auth::user()->role == 'Anggota') {
+            $member = Auth::user()->member;
+            
+            // Statistics for Student
+            $activeBorrowings = $member ? Borrowing::where('member_id', $member->id)->whereNull('return_date')->count() : 0;
+            $activeReservations = $member ? \App\Models\BookReservation::where('member_id', $member->id)->where('status', 'Pending')->count() : 0;
+            $unpaidFines = $member ? \App\Models\Fine::whereHas('borrowing', function($q) use ($member) {
+                $q->where('member_id', $member->id);
+            })->where('status', 'Belum Lunas')->sum('amount') : 0;
+            
+            // Data for Student Dashboard
+            $recentBorrowings = $member ? Borrowing::where('member_id', $member->id)->latest()->take(5)->get() : collect();
+            
+            return view('dashboard.index', [
+                'title' => 'Dashboard Siswa',
+                'activeBorrowings' => $activeBorrowings,
+                'activeReservations' => $activeReservations,
+                'unpaidFines' => $unpaidFines,
+                'recentBorrowings' => $recentBorrowings
+            ]);
+        }
 
+        // Statistics for Admin/Superadmin
+        $stats = [
+            'users' => User::count(),
+            'members' => Member::count(),
+            'books' => Book::count(),
+            'borrowings' => Borrowing::count(),
+            'reservations' => \App\Models\BookReservation::count()
+        ];
+        
         return view('dashboard.index', [
             'title' => 'Dashboard',
-            'totalUsers' => $totalUsers,
-            'superadminCount' => $superadminCount,
-            'adminCount' => $adminCount,
-            'memberCount' => $memberCount,
-            'bookCount' => $bookCount,
-            'borrowingCount' => $borrowingCount,
-            'reservationCount' => $reservationCount,
+            'stats' => $stats
         ]);
     }
 
