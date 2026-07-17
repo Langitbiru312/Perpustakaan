@@ -14,11 +14,11 @@ class SettingSeeder extends Seeder
     public function run(): void
     {
         Setting::create([
-            'app_name' => 'NiceAdmin Laravel',
-            'copyright' => 'Tamus Tahir | 2026',
-            'login_title' => 'Halaman Login',
-            'keywords' => 'admin, dashboard, laravel, niceadmin, bootstrap',
-            'description' => 'Aplikasi dashboard admin menggunakan Laravel dan NiceAdmin template.',
+            'app_name'    => 'Perpustakaan SMA Angkasa Jaya',
+            'copyright'   => 'Yelma Rapiani | 2026',
+            'login_title' => 'Login Perpustakaan SMA Angkasa Jaya',
+            'keywords'    => 'perpustakaan, sekolah, sma angkasa jaya, manajemen buku',
+            'description' => 'Aplikasi manajemen perpustakaan sekolah SMA Angkasa Jaya.',
         ]);
     }
 }
