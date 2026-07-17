@@ -28,70 +28,80 @@
         </div>
     </div>
 
-    <!-- Statistics Cards -->
+    <!-- Library Statistics Cards -->
     <div class="row g-4 mb-4">
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="card shadow-sm border-0 h-100">
                 <div class="card-body p-4">
                     <div class="d-flex align-items-center justify-content-between">
                         <div>
-                            <p class="text-muted mb-1 small">Total Users</p>
-                            <h2 class="fw-bold mb-0">{{ $totalUsers }}</h2>
+                            <p class="text-muted mb-1 small">Total Buku</p>
+                            <h2 class="fw-bold mb-0">{{ $bookCount }}</h2>
                         </div>
                         <div class="bg-primary bg-opacity-10 rounded-circle p-3">
-                            <i class='bx bx-user fs-2 text-primary'></i>
+                            <i class='bx bx-book fs-2 text-primary'></i>
                         </div>
                     </div>
                 </div>
                 <div class="card-footer bg-primary bg-opacity-10 border-0 py-2">
-                    <small class="text-primary fw-semibold">
-                        <i class='bx bx-trending-up me-1'></i>
-                        All registered users
-                    </small>
+                    <a href="{{ route('book.index') }}" class="text-primary fw-semibold text-decoration-none small">Lihat Detail <i class='bx bx-right-arrow-alt'></i></a>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="card shadow-sm border-0 h-100">
                 <div class="card-body p-4">
                     <div class="d-flex align-items-center justify-content-between">
                         <div>
-                            <p class="text-muted mb-1 small">Superadmin</p>
-                            <h2 class="fw-bold mb-0">{{ $superadminCount }}</h2>
+                            <p class="text-muted mb-1 small">Total Anggota</p>
+                            <h2 class="fw-bold mb-0">{{ $memberCount }}</h2>
                         </div>
                         <div class="bg-success bg-opacity-10 rounded-circle p-3">
-                            <i class='bx bx-shield fs-2 text-success'></i>
+                            <i class='bx bx-id-card fs-2 text-success'></i>
                         </div>
                     </div>
                 </div>
                 <div class="card-footer bg-success bg-opacity-10 border-0 py-2">
-                    <small class="text-success fw-semibold">
-                        <i class='bx bx-check-circle me-1'></i>
-                        Full access users
-                    </small>
+                    <a href="{{ route('member.index') }}" class="text-success fw-semibold text-decoration-none small">Lihat Detail <i class='bx bx-right-arrow-alt'></i></a>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="card shadow-sm border-0 h-100">
                 <div class="card-body p-4">
                     <div class="d-flex align-items-center justify-content-between">
                         <div>
-                            <p class="text-muted mb-1 small">Admin</p>
-                            <h2 class="fw-bold mb-0">{{ $adminCount }}</h2>
+                            <p class="text-muted mb-1 small">Total Peminjaman</p>
+                            <h2 class="fw-bold mb-0">{{ $borrowingCount }}</h2>
+                        </div>
+                        <div class="bg-warning bg-opacity-10 rounded-circle p-3">
+                            <i class='bx bx-transfer fs-2 text-warning'></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer bg-warning bg-opacity-10 border-0 py-2">
+                    <a href="{{ route('borrowing.index') }}" class="text-warning fw-semibold text-decoration-none small">Lihat Detail <i class='bx bx-right-arrow-alt'></i></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <p class="text-muted mb-1 small">Total Reservasi</p>
+                            <h2 class="fw-bold mb-0">{{ $reservationCount }}</h2>
                         </div>
                         <div class="bg-info bg-opacity-10 rounded-circle p-3">
-                            <i class='bx bx-user-check fs-2 text-info'></i>
+                            <i class='bx bx-bookmark-plus fs-2 text-info'></i>
                         </div>
                     </div>
                 </div>
                 <div class="card-footer bg-info bg-opacity-10 border-0 py-2">
-                    <small class="text-info fw-semibold">
-                        <i class='bx bx-user-circle me-1'></i>
-                        Standard access users
-                    </small>
+                    <a href="{{ route('reservation.index') }}" class="text-info fw-semibold text-decoration-none small">Lihat Detail <i class='bx bx-right-arrow-alt'></i></a>
                 </div>
             </div>
         </div>

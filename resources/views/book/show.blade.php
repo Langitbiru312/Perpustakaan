@@ -133,6 +133,55 @@
         </div>
     </div>
 
+        <!-- Review Section -->
+        <div class="col-md-12 mb-4">
+            <div class="card shadow-lg p-3">
+                <h5 class="fw-bold mb-3">Ulasan Buku</h5>
+                
+                @if(Auth::user()->role === 'Anggota')
+                    <form action="{{ route('review.store') }}" method="POST" class="mb-4 bg-light p-3 rounded">
+                        @csrf
+                        <input type="hidden" name="book_id" value="{{ $book->id }}">
+                        <div class="mb-3">
+                            <label class="form-label required fw-bold">Beri Rating</label>
+                            <select name="rating" class="form-select" style="max-width: 200px;" required>
+                                <option value="5">⭐⭐⭐⭐⭐ (5 Sangat Bagus)</option>
+                                <option value="4">⭐⭐⭐⭐ (4 Bagus)</option>
+                                <option value="3">⭐⭐⭐ (3 Biasa)</option>
+                                <option value="2">⭐⭐ (2 Kurang)</option>
+                                <option value="1">⭐ (1 Buruk)</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Ulasan</label>
+                            <textarea name="review" rows="3" class="form-control" placeholder="Tuliskan ulasan Anda..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary"><i class='bx bx-send'></i> Kirim Ulasan</button>
+                    </form>
+                @endif
+
+                <div class="list-group">
+                    @forelse($book->reviews as $review)
+                        <div class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between align-items-center">
+                                <h6 class="mb-1 fw-bold">{{ $review->member->user->name }}</h6>
+                                <small class="text-muted">{{ $review->created_at->diffForHumans() }}</small>
+                            </div>
+                            <p class="mb-1 text-warning fs-5">
+                                {!! str_repeat('&#9733;', $review->rating) !!}{!! str_repeat('&#9734;', 5 - $review->rating) !!}
+                            </p>
+                            @if($review->review)
+                                <p class="mb-0">{{ $review->review }}</p>
+                            @endif
+                        </div>
+                    @empty
+                        <div class="text-center text-muted py-3">Belum ada ulasan untuk buku ini.</div>
+                    @endforelse
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Add Modal -->
     <div class="modal fade" id="addCopyModal" tabindex="-1">
         <div class="modal-dialog">

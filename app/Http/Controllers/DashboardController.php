@@ -14,12 +14,20 @@ class DashboardController extends Controller
         $totalUsers = \App\Models\User::count();
         $superadminCount = \App\Models\User::where('role', 'Superadmin')->count();
         $adminCount = \App\Models\User::where('role', 'Admin')->count();
+        $memberCount = \App\Models\Member::count();
+        $bookCount = \App\Models\Book::count();
+        $borrowingCount = \App\Models\Borrowing::count();
+        $reservationCount = \App\Models\BookReservation::count();
 
         return view('dashboard.index', [
             'title' => 'Dashboard',
             'totalUsers' => $totalUsers,
             'superadminCount' => $superadminCount,
             'adminCount' => $adminCount,
+            'memberCount' => $memberCount,
+            'bookCount' => $bookCount,
+            'borrowingCount' => $borrowingCount,
+            'reservationCount' => $reservationCount,
         ]);
     }
 
