@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 use App\Models\Member;
 use App\Models\User;
 
@@ -49,7 +48,7 @@ class MemberController extends Controller
             $user = User::create([
                 'name'     => $request->name,
                 'email'    => $request->email,
-                'password' => Hash::make($request->password),
+                'password' => $request->password,
                 'role'     => 'Anggota',
             ]);
 

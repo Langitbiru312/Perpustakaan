@@ -226,7 +226,7 @@
                         <li>
                             <a class="dropdown-item d-flex align-items-center" href="{{ route('dashboard.show') }}">
                                 <i class="bi bi-person"></i>
-                                <span>My Profile</span>
+                                <span>Profil Saya</span>
                             </a>
                         </li>
                         <li>
@@ -236,7 +236,7 @@
                         <li>
                             <a class="dropdown-item d-flex align-items-center" href="{{ route('dashboard.edit') }}">
                                 <i class="bi bi-gear"></i>
-                                <span>Account Settings</span>
+                                <span>Pengaturan Akun</span>
                             </a>
                         </li>
                         <li>
@@ -251,7 +251,7 @@
                             <a class="dropdown-item d-flex align-items-center" href="#" data-bs-toggle="modal"
                                 data-bs-target="#logoutModal">
                                 <i class="bi bi-box-arrow-right"></i>
-                                <span>Sign Out</span>
+                                <span>Keluar</span>
                             </a>
                         </li>
 
@@ -280,7 +280,7 @@
                 <a class="nav-link {{ request()->routeIs('setting.*') ? '' : 'collapsed' }}"
                     href="{{ route('setting.index') }}">
                     <i class='bx bx-cog'></i>
-                    <span>Setting</span>
+                    <span>Pengaturan</span>
                 </a>
             </li>
 
@@ -420,11 +420,11 @@
 
                 <div class="modal-content">
                     <div class="modal-body">
-                        Apakah anda ingin menghapus data?
+                        Apakah Anda yakin ingin menghapus data ini?
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn btn-primary">Ya, hapus data</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-danger">Ya, Hapus</button>
                     </div>
                 </div>
 
@@ -438,11 +438,11 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-body">
-                    Anda yakin ingin logout?
+                    Anda yakin ingin keluar dari sistem?
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
-                    <a href="{{ route('login.logout') }}" class="btn btn-primary">Ya, logout!</a>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <a href="{{ route('login.logout') }}" class="btn btn-danger">Ya, Keluar</a>
                 </div>
             </div>
         </div>
@@ -498,10 +498,10 @@
         let flashSuccess = "{{ session('success') ?? '' }}";
         if (flashSuccess) {
             Swal.fire({
-                title: "Mantap",
+                title: "Berhasil!",
                 text: flashSuccess,
                 icon: "success",
-                timer: 1000,
+                timer: 2000,
                 timerProgressBar: true
             });
         }
@@ -509,7 +509,7 @@
         let flashError = "{{ session('error') ?? '' }}";
         if (flashError) {
             Swal.fire({
-                title: "Waduh...",
+                title: "Gagal!",
                 text: flashError,
                 icon: "error"
             });

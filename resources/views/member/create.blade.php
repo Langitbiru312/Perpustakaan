@@ -1,6 +1,18 @@
 <x-app>
     <x-slot:title>{{ $title }}</x-slot:title>
     <div class="card shadow-lg p-3">
+
+        @if ($errors->any())
+            <div class="alert alert-danger border-0 mb-4">
+                <strong><i class='bx bx-error-circle me-1'></i> Terdapat kesalahan pada formulir:</strong>
+                <ul class="mb-0 mt-2">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <form action="{{ route('member.store') }}" method="post">
             @csrf
 
