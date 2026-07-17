@@ -328,6 +328,17 @@
                 </a>
             </li>
 
+            @if(in_array(Auth::user()->role, ['Superadmin', 'Admin']))
+                <li class="nav-heading">Keanggotaan</li>
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('member.*') ? '' : 'collapsed' }}"
+                        href="{{ route('member.index') }}">
+                        <i class='bx bx-id-card'></i>
+                        <span>Anggota</span>
+                    </a>
+                </li>
+            @endif
+
 
         </ul>
 

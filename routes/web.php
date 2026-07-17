@@ -32,6 +32,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/book/{book}/copy', [App\Http\Controllers\BookCopyController::class, 'store'])->name('book.copy.store');
     Route::put('/book/{book}/copy/{copy}', [App\Http\Controllers\BookCopyController::class, 'update'])->name('book.copy.update');
     Route::delete('/book/{book}/copy/{copy}', [App\Http\Controllers\BookCopyController::class, 'destroy'])->name('book.copy.destroy');
+    Route::resource('/member', App\Http\Controllers\MemberController::class)->middleware('role:Superadmin,Admin');
 
     Route::get('/setting', [SettingController::class, 'index'])->name('setting.index');
     Route::put('/setting/{setting}/update', [SettingController::class, 'update'])->name('setting.update');
