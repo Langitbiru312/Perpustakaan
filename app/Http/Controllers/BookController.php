@@ -13,10 +13,13 @@ class BookController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Book::with(['category', 'author', 'publisher'])->latest();
+        $query = Book::with(['category', 'author', 'publisher', 'copies', 'reviews'])->latest();
         if ($request->search) {
-            $query->where('title', 'like', "%{$request->search}%")
-                  ->orWhere('isbn', 'like', "%{$request->search}%");
+            $query->where(function($q) use ($request) {
+                $q->where('title', 'like', "%{$request->search}%")
+                  ->orWhere('isbn', 'like', "%{$request->search}%")
+                  ->orWhereHas('author', fn($a) => $a->where('name', 'like', "%{$request->search}%"));
+            });
         }
         return view('book.index', [
             'title' => 'Katalog Buku',
@@ -59,7 +62,7 @@ class BookController extends Controller
     {
         return view('book.show', [
             'title' => 'Detail Buku',
-            'book' => $book->load(['category', 'author', 'publisher'])
+            'book' => $book->load(['category', 'author', 'publisher', 'copies', 'reviews.member.user'])
         ]);
     }
 
