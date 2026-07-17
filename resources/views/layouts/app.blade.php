@@ -319,6 +319,15 @@
                 </li>
             @endif
 
+            <li class="nav-heading">Katalog</li>
+            <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('book.*') ? '' : 'collapsed' }}"
+                    href="{{ route('book.index') }}">
+                    <i class='bx bx-book-alt'></i>
+                    <span>Buku</span>
+                </a>
+            </li>
+
 
         </ul>
 

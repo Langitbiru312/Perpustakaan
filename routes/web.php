@@ -28,6 +28,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('/category', App\Http\Controllers\CategoryController::class);
     Route::resource('/author', App\Http\Controllers\AuthorController::class);
     Route::resource('/publisher', App\Http\Controllers\PublisherController::class);
+    Route::resource('/book', App\Http\Controllers\BookController::class);
 
     Route::get('/setting', [SettingController::class, 'index'])->name('setting.index');
     Route::put('/setting/{setting}/update', [SettingController::class, 'update'])->name('setting.update');
