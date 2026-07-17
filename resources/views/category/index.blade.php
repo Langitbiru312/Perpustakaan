@@ -14,7 +14,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($categorys as $item)
+                    @foreach ($categories as $item)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $item->name }}</td>
