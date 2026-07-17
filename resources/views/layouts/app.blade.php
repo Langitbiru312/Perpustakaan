@@ -294,6 +294,31 @@
                 </li>
             @endif
 
+            @if (in_array(Auth::user()->role, ['Superadmin', 'Admin']))
+                <li class="nav-heading">Master Data</li>
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('category.*') ? '' : 'collapsed' }}"
+                        href="{{ route('category.index') }}">
+                        <i class='bx bx-category'></i>
+                        <span>Kategori</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('author.*') ? '' : 'collapsed' }}"
+                        href="{{ route('author.index') }}">
+                        <i class='bx bx-user-voice'></i>
+                        <span>Penulis</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('publisher.*') ? '' : 'collapsed' }}"
+                        href="{{ route('publisher.index') }}">
+                        <i class='bx bx-buildings'></i>
+                        <span>Penerbit</span>
+                    </a>
+                </li>
+            @endif
+
 
         </ul>
 
