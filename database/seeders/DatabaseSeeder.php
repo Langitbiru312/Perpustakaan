@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
             MemberSeeder::class,
             BorrowingSeeder::class,
             FineSeeder::class,
+            BookReservationSeeder::class,
         ]);
     }
 }

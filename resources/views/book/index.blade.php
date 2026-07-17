@@ -19,9 +19,7 @@
                         <th scope="col">Penulis</th>
                         <th scope="col">Penerbit</th>
                         <th scope="col">Tahun</th>
-                        @if(Auth::user()->role == 'Superadmin' || Auth::user()->role == 'Admin')
-                            <th scope="col">Action</th>
-                        @endif
+                        <th scope="col">Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -43,8 +41,8 @@
                             <td>{{ $item->author->name }}</td>
                             <td>{{ $item->publisher->name }}</td>
                             <td>{{ $item->publication_year }}</td>
-                            @if(Auth::user()->role == 'Superadmin' || Auth::user()->role == 'Admin')
-                                <td>
+                            <td>
+                                @if(Auth::user()->role == 'Superadmin' || Auth::user()->role == 'Admin')
                                     <a href="{{ route('book.edit', $item) }}" class="btn btn-warning btn-sm">
                                         <i class='bx bx-edit-alt'></i>
                                     </a>
@@ -54,8 +52,16 @@
                                             <i class='bx bx-trash'></i>
                                         </button>
                                     </form>
-                                </td>
-                            @endif
+                                @elseif(Auth::user()->role == 'Anggota')
+                                    <form action="{{ route('reservation.store') }}" method="POST" class="d-inline">
+                                        @csrf
+                                        <input type="hidden" name="book_id" value="{{ $item->id }}">
+                                        <button type="submit" class="btn btn-primary btn-sm" onclick="return confirm('Reservasi buku ini?')">
+                                            <i class='bx bx-bookmark-plus'></i> Reservasi
+                                        </button>
+                                    </form>
+                                @endif
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>

@@ -27,4 +27,9 @@ class Book extends Model
     {
         return $this->hasMany(BookCopy::class);
     }
+
+    public function reservations()
+    {
+        return $this->hasMany(BookReservation::class);
+    }
 }

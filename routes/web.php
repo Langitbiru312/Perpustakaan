@@ -37,6 +37,10 @@ Route::middleware('auth')->group(function () {
     Route::put('/borrowing/{borrowing}/return', [App\Http\Controllers\BorrowingController::class, 'returnBook'])->name('borrowing.return');
     Route::get('/fine', [App\Http\Controllers\FineController::class, 'index'])->name('fine.index');
     Route::put('/fine/{fine}/pay', [App\Http\Controllers\FineController::class, 'pay'])->name('fine.pay');
+    
+    Route::get('/reservation', [App\Http\Controllers\BookReservationController::class, 'index'])->name('reservation.index');
+    Route::post('/reservation', [App\Http\Controllers\BookReservationController::class, 'store'])->name('reservation.store');
+    Route::put('/reservation/{reservation}/cancel', [App\Http\Controllers\BookReservationController::class, 'cancel'])->name('reservation.cancel');
 
     Route::get('/setting', [SettingController::class, 'index'])->name('setting.index');
     Route::put('/setting/{setting}/update', [SettingController::class, 'update'])->name('setting.update');
