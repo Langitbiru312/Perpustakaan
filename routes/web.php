@@ -25,6 +25,9 @@ Route::middleware('auth')->group(function () {
     Route::put('/dashboard/update', [DashboardController::class, 'update'])->name('dashboard.update');
 
     Route::resource('/user', UserController::class)->middleware('role:Superadmin');
+    Route::resource('/category', App\Http\Controllers\CategoryController::class);
+    Route::resource('/author', App\Http\Controllers\AuthorController::class);
+    Route::resource('/publisher', App\Http\Controllers\PublisherController::class);
 
     Route::get('/setting', [SettingController::class, 'index'])->name('setting.index');
     Route::put('/setting/{setting}/update', [SettingController::class, 'update'])->name('setting.update');
